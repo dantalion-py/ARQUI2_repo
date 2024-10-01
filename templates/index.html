@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de Temperatura</title>
+  <link rel="stylesheet" href="../static/styles.css">
+
+  <script>
+    async function fetchTemperature() {
+      const response = await fetch('/get-temperature');
+      const data = await response.json();
+      document.getElementById('temperature').innerText = `Temperatura: ${data.temperature} ºC`;
+    }
+
+    setInterval(fetchTemperature, 1000); // Actualizar cada segundo
+  </script>
+</head>
+<body onload="fetchTemperature()">
+
+  <div class="container">
+    <h1>Control de Temperatura</h1>
+    <h1>hora</h1>
+    <p id="temperature">Cargando...</p>
+  </div>
+
+</body>
+</html>
