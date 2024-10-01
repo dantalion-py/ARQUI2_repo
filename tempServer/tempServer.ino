@@ -3,11 +3,17 @@
 #include <DallasTemperature.h>
 #include <WiFi.h>
 
-const int oneWireBus = 27;
-OneWire oneWire(oneWireBus);
-DallasTemperature sensors(&oneWire);
+const int oneWireBus1 = 13;
+const int oneWireBus2 = 26;
 
-const char* ssid = "1234";        
+OneWire oneWire1(oneWireBus1);
+OneWire oneWire2(oneWireBus2);
+
+// Instancias de DallasTemperature para cada sensor
+DallasTemperature sensors1(&oneWire1);
+DallasTemperature sensors2(&oneWire2);
+
+const char* ssid = "saitama123";        
 const char* password = "12345678"; 
 
 WiFiServer server(80);
@@ -15,8 +21,11 @@ WiFiServer server(80);
 void setup() {
   Serial.begin(9600);
   delay(3000);
-  sensors.begin();
-  
+
+  // Iniciar los sensores
+  sensors1.begin();
+  sensors2.begin();
+
   // Conectar a WiFi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -26,7 +35,6 @@ void setup() {
   Serial.println("Conectado a WiFi");
   server.begin();
   Serial.println(WiFi.localIP());
-
 }
 
 void loop() {
@@ -36,17 +44,24 @@ void loop() {
     client.flush();
 
     // Solicitar temperaturas
-    sensors.requestTemperatures();
-    float temperatureC = sensors.getTempCByIndex(0);
+    sensors1.requestTemperatures();
+    float temperatureC_1 = sensors1.getTempCByIndex(0);
 
-    // Si la solicitud es para los datos
+    sensors2.requestTemperatures();
+    float temperatureC_2 = sensors2.getTempCByIndex(0);
+
+    // Si la solicitud es para los datos de temperatura
     if (request.indexOf("/temperature") != -1) {
       client.println("HTTP/1.1 200 OK");
       client.println("Content-Type: application/json");
       client.println("Connection: close");
       client.println();
-      client.print("{\"temperature\":");
-      client.print(temperatureC, 1);
+
+      // Respuesta JSON con las dos temperaturas
+      client.print("{\"temperature_1\":");
+      client.print(temperatureC_1, 1); // Temperatura del sensor 1 con 2 decimales
+      client.print(", \"temperature_2\":");
+      client.print(temperatureC_2, 1); // Temperatura del sensor 2 con 2 decimales
       client.println("}");
     }
 

@@ -11,7 +11,7 @@ body {
   
   /* Contenedor principal */
   .container {
-    background-color: #ffffff;
+    background-color: #ffeaea;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -20,9 +20,10 @@ body {
   }
   
   /* Título */
-  h1 {
-    color: #333333;
+  .titulo{
+    background-color: #87d8d1;
     margin-bottom: 20px;
+    border-radius: 7px;
   }
   
   /* Texto de temperatura */

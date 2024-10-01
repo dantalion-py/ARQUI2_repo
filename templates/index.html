@@ -10,18 +10,35 @@
     async function fetchTemperature() {
       const response = await fetch('/get-temperature');
       const data = await response.json();
-      document.getElementById('temperature').innerText = `Temperatura: ${data.temperature} ºC`;
+
+      document.getElementById('temperature1').innerText = `Sensor 1: ${data.sensor_1} ºC`;
+      document.getElementById('temperature2').innerText = `Sensor 2: ${data.sensor_2} ºC`;
     }
 
-    setInterval(fetchTemperature, 1000); // Actualizar cada segundo
+    setInterval(fetchTemperature, 1000);
+
+    function actualizarHora() {
+      const reloj = document.getElementById("clock");
+      const fechaActual = new Date();
+      const hora = fechaActual.toLocaleTimeString(); 
+      reloj.textContent = hora;
+    }
+
+    setInterval(actualizarHora, 1000);
+
+    actualizarHora();
   </script>
 </head>
 <body onload="fetchTemperature()">
 
   <div class="container">
-    <h1>Control de Temperatura</h1>
-    <h1>hora</h1>
-    <p id="temperature">Cargando...</p>
+    <div class="titulo">
+      <h1>Control de Temperatura</h1>
+    </div>
+    <div id="clock"></div>
+
+    <p id="temperature1"><strong>Cargando sensor 1...</strong></p>
+    <p id="temperature2"><strong>Cargando sensor 2...</strong></p>
   </div>
 
 </body>
